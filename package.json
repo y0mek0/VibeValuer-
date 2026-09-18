@@ -5,7 +5,7 @@
   "description": "Agent work evaluation dashboard — VibeValuer",
   "scripts": {
     "start": "node server.js",
-    "check": "node --check server.js && node --check public/app.js && node --check src/scoring.js && node --check src/validate.js && node --check src/db.js && node --check src/vibe-adapter.js && node --check src/auth.js && node --check src/session.js",
+    "check": "node --check server.js && node --check public/app.js && node --check src/scoring.js && node --check src/validate.js && node --check src/db.js && node --check src/vibe-adapter.js && node --check src/auth.js && node --check src/session.js && node --check scripts/init-secrets.cjs && node --check scripts/backup.mjs && node --check scripts/create-agent.mjs && node --check scripts/cron-decay.cjs && node --check scripts/cleanup-logs.mjs && node --check scripts/archive-old-runs.mjs && node --check scripts/smoke.cjs",
     "qa:smoke": "node scripts/smoke.cjs",
     "init": "node scripts/init-secrets.cjs",
     "backup": "node scripts/backup.mjs",
