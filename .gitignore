@@ -1,0 +1,39 @@
+# Environment — DO NOT COMMIT
+.env
+.env.local
+.env.*.local
+
+# Data — local SQLite + backups
+data/
+!data/.gitkeep
+
+# Dependencies
+node_modules/
+
+# Logs
+*.log
+server.log
+server-*.log
+
+# Backups created by tests
+*.backup
+.backup/
+
+# Screenshots / test artifacts
+screenshots/
+.playwright-mcp/
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+dist/
+build/
+.cache/
+
+# Generated docs (rebuild with `npm run docs`)
+.docs-out/
+.hermes-*

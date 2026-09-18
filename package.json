@@ -1,0 +1,27 @@
+{
+  "name": "VibeValuer",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Agent work evaluation dashboard — VibeValuer",
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check server.js && node --check public/app.js && node --check src/scoring.js && node --check src/validate.js && node --check src/db.js && node --check src/vibe-adapter.js && node --check src/auth.js && node --check src/session.js",
+    "qa:smoke": "node scripts/smoke.cjs",
+    "init": "node scripts/init-secrets.cjs",
+    "backup": "node scripts/backup.mjs",
+    "create-agent": "node scripts/create-agent.mjs",
+    "cron:decay": "node scripts/cron-decay.cjs",
+    "cron:logs": "node scripts/cleanup-logs.mjs",
+    "archive:runs": "node scripts/archive-old-runs.mjs",
+    "docs": "node scripts/regen-docs.cjs"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.5.0",
+    "dotenv": "^17.4.2",
+    "ethers": "^6.17.0",
+    "ws": "^8.21.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

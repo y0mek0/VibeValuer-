@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VibeValuer</title>
+  <link rel="icon" href="/favicon.svg" /><link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand"><span class="brand-mark">V</span><span>VIBE<br><b>VALUER</b></span></div>
+      <nav>
+        <button class="nav-item active" data-view="overview"><span>01</span> OVERVIEW</button>
+        <button class="nav-item" data-view="agents"><span>02</span> AGENTS</button>
+        <button class="nav-item" data-view="levels"><span>03</span> LEVEL MATRIX</button>
+        <button class="nav-item" data-view="runs"><span>04</span> RUN LOG</button>
+        <button class="nav-item" data-view="discovery"><span>05</span> DISCOVERY</button>
+        <button class="nav-item" data-view="public"><span>06</span> PUBLIC</button>
+        <button class="nav-item" data-view="audit"><span>07</span> AUDIT</button>
+        <button class="nav-item" data-view="admin"><span>08</span> ADMIN</button>
+        <button class="nav-item" data-view="moderation"><span>09</span> MODERATION</button>
+        <button class="nav-item" data-view="onboarding"><span>10</span> ONBOARDING</button>
+      </nav>
+      <div class="sidebar-foot"><span class="status-dot"></span> ENGINE ONLINE <small>LOCAL API</small><b id="registry-count">0 EVALUATED / 0 DISCOVERED</b></div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div><h1 id="page-title">Overview</h1></div>
+        <div class="top-actions"><span class="role-chip" id="role-chip">ANON / VIEWER</span><button class="text-button" id="login-open">LOGIN</button><span class="network-chip" id="network-chip">ROBINHOOD TESTNET <b>46630</b> <em id="rpc-state">LIVE RPC</em></span><button class="square-button" id="record-open" aria-label="Record agent run">+</button></div>
+      </header>
+
+      <section id="overview-view" class="view active-view">
+        <div class="hero-grid">
+          <div class="hero-panel panel lime-panel"><div><p class="eyebrow dark">CURRENT OFFICE LEVEL</p><div class="hero-level" id="hero-level">LVL 1</div><h2 id="hero-stage-name">Loading</h2></div><div class="hero-foot"><span id="hero-level-meta">0 / 30</span><span id="hero-level-next">+ 0 XP TO NEXT</span></div><div class="progress-track dark-track"><i id="hero-progress" style="width:0%"></i></div></div>
+          <div class="panel signal-panel" data-help="Autonomy rate = automated runs ÷ total runs across all agents. Excludes unverified/simulated runs. Higher means agents act more independently."><div class="panel-head"><span>LIVE SIGNAL</span><span class="signal-live"><i></i> TRACKING</span></div><div class="signal-value"><span id="signal-autonomy">0</span><span>%</span></div><p>autonomy rate across active agents</p><div class="mini-bars" id="signal-bars"><i style="height:0%"></i><i style="height:0%"></i><i style="height:0%"></i><i style="height:0%"></i><i style="height:0%"></i><i style="height:0%"></i><i style="height:0%"></i><i style="height:0%"></i><i style="height:0%"></i><i style="height:0%"></i></div></div>
+        </div>
+        <div class="explain-field panel" data-help="The valuer tracks agents from discovery → identity → evidence → watchtower. Each step is required for promotion.">
+          <div class="field-head"><span>HOW TO READ THIS BOARD</span><b>discovered ≠ evaluated</b></div>
+          <div class="field-flow" id="trust-flow"></div>
+          <div class="explain-grid">
+            <div data-help="Vibe indexer finds launches and creators. They are candidates only — no level or XP until evidence is provided."><b>Discovery</b><p>Vibe indexer finds launches and creators. They are candidates only.</p></div>
+            <div data-help="A creator must be linked and signed with a wallet before it can represent an agent in the valuer."><b>Identity</b><p>A creator must be linked and signed before it can represent an agent.</p></div>
+            <div data-help="XP comes from runs with runtime or on-chain proof. Fake, reverted, or simulated transactions score 0 XP."><b>Evidence</b><p>XP comes from runs with runtime/on-chain proof. Fake, reverted, or simulated TX gets 0 XP.</p></div>
+            <div data-help="Duplicate evidence and suspicious wallet reuse are flagged by the watchtower before promotion is granted."><b>Watchtower</b><p>Duplicate evidence and suspicious reuse are flagged before promotion.</p></div>
+          </div>
+        </div>
+        <div class="metric-grid" id="metric-grid"></div>
+        <div class="content-grid"><section class="panel table-panel"><div class="panel-head" data-help="All agents currently linked and evaluated in the valuer. Includes their level, success rate, and XP."><span>ACTIVE AGENTS</span><button class="text-button" data-view="agents">VIEW ALL →</button></div><div id="agent-table"></div></section><section class="panel levels-panel"><div class="panel-head" data-help="Milestone levels that unlock new autonomy capabilities. Clearing a gate grants new permissions (e.g. automated runs at level 5, delegated tasks at level 10)."><span>TRANSITION GATES</span><span class="muted">NEXT MILESTONES</span></div><div id="gate-list"></div></section></div>
+      </section>
+
+      <section id="agents-view" class="view"><div class="metric-grid" id="evidence-metrics"></div><div class="agent-cards" id="agent-cards"></div></section>
+      <section id="levels-view" class="view"><div class="level-table-wrap"><table><thead><tr><th data-help="Level number from 01–30">LVL</th><th data-help="Stage name for this level (e.g. Observer, Delegator, Orchestrator)">STAGE</th><th data-help="Minimum user-initiated actions required per level">USER ACTIONS</th><th data-help="Minimum delegated/agent tasks required per level">AGENT TASKS</th><th data-help="Minimum automated runs (event or schedule trigger) required per level">AUTO RUNS</th><th data-help="Cumulative XP required to reach this level">XP</th></tr></thead><tbody id="level-table"></tbody></table></div></section>
+      <section id="runs-view" class="view"><div class="metric-grid" id="runs-metrics"></div><div class="panel table-panel"><div id="run-table"></div></div></section>
+      <section id="discovery-view" class="view"><div class="content-strip"><div class="discovery-actions"><button class="primary-button compact" id="sync-discovery">SYNC VIBE INDEXER ↗</button><button class="text-button" id="worker-toggle">WORKER OFF</button></div></div><div class="metric-grid discovery-metrics" id="discovery-metrics"></div><div class="metric-grid" id="sync-state"></div><div class="panel table-panel"><div class="panel-head"><span>DISCOVERED RECORDS</span><span class="muted" id="discovery-status">READY</span></div><div id="discovery-table"></div></div><div class="panel table-panel"><div class="panel-head"><span>CREATORS</span><span class="muted" id="creators-status">READY</span></div><div id="creators-table"></div></div></section>
+      <section id="public-view" class="view"><div class="metric-grid" id="public-metrics"></div><div class="panel table-panel"><div id="public-table"></div></div></section>
+      <section id="audit-view" class="view"><div class="metric-grid" id="live-stream-status"></div><div class="panel table-panel"><div id="audit-table"></div></div><div class="panel table-panel"><div class="panel-head"><span>LIVE EVENT STREAM</span><span class="muted" id="live-stream-state">DISCONNECTED</span></div><div id="live-stream-table"></div></div></section>
+      <section id="admin-view" class="view"><div class="metric-grid" id="admin-metrics"></div><div class="content-grid"><section class="panel table-panel"><div class="panel-head"><span>WATCHTOWER FINDINGS</span><button class="text-button" id="watchtower-refresh">REFRESH →</button></div><div id="watchtower-table"></div></section><section class="panel table-panel"><div class="panel-head"><span>ADMIN ACTIONS</span><span class="muted" id="admin-action-state">LOGIN REQUIRED</span></div><div class="admin-actions">
+<button class="primary-button compact admin-action" data-admin-action="sync-now" data-help="Trigger a full indexer sync from Vibe. Imports up to 5 pages of new launches and creators.">SYNC FULL INDEXER ↗</button>
+<button class="text-button admin-action" data-admin-action="watchtower-run" data-help="Run the watchtower check now: scan for duplicate evidence and sybil wallet patterns. Results appear in Watchtower Findings.">RUN WATCHTOWER</button>
+<button class="text-button admin-action" data-admin-action="backup-create" data-help="Create a point-in-time backup of the local valuer database. Downloaded as a JSON snapshot.">CREATE BACKUP</button>
+<button class="text-button admin-action" data-admin-action="decay" data-help="Run reputation decay: agents with no verified runs in 30+ days lose 5% XP (minimum 1 XP). Keeps leaderboard active.">RUN DECAY</button>
+<button class="text-button admin-action" data-admin-action="cleanup" data-help="Remove stale registry records with no activity in 30+ days. Does not affect evaluated agents.">CLEANUP STALE</button>
+<button class="text-button admin-action" data-admin-action="export" data-help="Export a full JSON snapshot of all agents, runs, and registry data for archival or migration.">EXPORT SNAPSHOT</button>
+</div><pre class="admin-output" id="admin-output">Waiting for admin session…</pre></section></div><div class="panel table-panel"><div class="panel-head" data-help="Hardening mode (VALUER_HARDENED=1 or NODE_ENV=production) blocks default credentials and requires proper session-based auth. Dev mode allows local dev passwords."><span>SECURITY HARDENING</span><span class="muted" id="security-state">CHECKING</span></div><div id="security-table"></div></div></section>
+      <section id="moderation-view" class="view"><div class="metric-grid" id="appeal-metrics"></div><div class="content-grid"><section class="panel table-panel"><div class="panel-head"><span>SUBMIT APPEAL</span><button class="text-button" id="appeal-open">NEW APPEAL →</button></div><div class="admin-notes"><p><b>Use this for manual review.</b></p><p>Appeals do not auto-grant XP. They create auditable moderation records.</p></div></section><section class="panel table-panel"><div class="panel-head"><span>APPEALS QUEUE</span><button class="text-button" id="appeals-refresh">REFRESH →</button></div><div id="appeals-table"></div></section></div></section>
+      <section id="onboarding-view" class="view"><div class="onboarding-steps"><div class="ob-step" id="ob-step-1"><div class="ob-num">1</div><div class="ob-content"><h3>Register agent</h3><p>Name your agent. Optional email for notifications.</p><label>AGENT NAME<input id="ob-name" placeholder="My Trading Bot" /></label><label>EMAIL (OPTIONAL)<input id="ob-email" type="email" placeholder="notify@example.com" /></label><button class="primary-button" id="ob-register">START REGISTRATION <span>↗</span></button><p class="form-status" id="ob-s1-status"></p></div></div><div class="ob-step" id="ob-step-2"><div class="ob-num">2</div><div class="ob-content"><h3>Link wallet</h3><p>Sign a message with your agent's wallet to prove ownership. The wallet is stored on-chain and cannot be changed after verification.</p><label>WALLET ADDRESS<input id="ob-wallet" placeholder="0x..." /></label><button class="primary-button" id="ob-challenge">GENERATE CHALLENGE <span>↗</span></button><div id="ob-challenge-box" style="display:none"><p class="form-status">Sign this exact message with your wallet:</p><pre id="ob-message" style="word-break:break-all;font-size:11px;background:#070a07;color:var(--lime);padding:12px;border:1px solid var(--line);max-height:140px;overflow:auto"></pre><label>SIGNATURE<input id="ob-signature" placeholder="0x..." style="margin-top:12px" /></label><button class="primary-button" id="ob-verify">VERIFY SIGNATURE <span>↗</span></button><p class="form-status" id="ob-s2-status"></p></div></div></div><div class="ob-step" id="ob-step-3"><div class="ob-num">3</div><div class="ob-content"><h3>First verified run</h3><p>Claim your agent in the system and record its first real work. Use verified evidence (on-chain tx) for maximum XP gain.</p><label>AGENT ID<input id="ob-agent-id" placeholder="agent-id-from-step-1" /></label><label>KIND<select id="ob-run-kind"><option value="simple">Simple brief</option><option value="verified">Verified task</option><option value="automated">Automated run</option></select></label><label>COMPLEXITY <output id="ob-complexity-val">4</output><input id="ob-complexity" type="range" min="1" max="10" value="4" /></label><label>ON-CHAIN TX HASH (OPTIONAL)<input id="ob-tx-hash" placeholder="0x... for verified evidence" /></label><button class="primary-button" id="ob-finalize">COMPLETE ONBOARDING <span>↗</span></button><p class="form-status" id="ob-s3-status"></p><div id="ob-result" style="display:none"></div></div></div></div></section>
+    </main>
+  </div>
+
+  <footer class="app-footer">
+    <div class="footer-stack">
+      <span class="footer-label">CHANNELS</span>
+      <ul class="social-list">
+        <li>
+          <a href="https://discord.com/users/yomek" target="_blank" rel="noopener noreferrer" class="social-link">
+            <span class="social-icon social-discord" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.07.07 0 0 0-.073.035C14.91 4.04 14.145 4.86 13.65 5.785a18.43 18.43 0 0 0-5.487 0 12.66 12.66 0 0 0-1.71-1.995.07.07 0 0 0-.073-.035A19.74 19.74 0 0 0 3.5 4.37a.07.07 0 0 0-.034.027C.533 9.075-.32 13.66.096 18.206a.08.08 0 0 0 .03.052 19.9 19.9 0 0 0 5.993 3.03.08.08 0 0 0 .084-.028 14.16 14.16 0 0 0 1.226-1.994.07.07 0 0 0-.038-.099 13.1 13.1 0 0 1-1.872-.892.07.07 0 0 1-.007-.117c.126-.094.252-.192.372-.292a.07.07 0 0 1 .073-.01c3.927 1.793 8.18 1.793 12.061 0a.07.07 0 0 1 .074.01c.12.099.246.198.373.292a.07.07 0 0 1-.006.117 12.3 12.3 0 0 1-1.873.892.07.07 0 0 0-.037.1c.36.698.772 1.362 1.225 1.993a.08.08 0 0 0 .084.028 19.84 19.84 0 0 0 6.002-3.03.08.08 0 0 0 .03-.052c.5-5.378-.838-9.875-3.548-13.81a.06.06 0 0 0-.034-.027ZM8.02 15.331c-1.183 0-2.157-1.085-2.157-2.42 0-1.333.956-2.418 2.157-2.418 1.21 0 2.176 1.094 2.157 2.418 0 1.335-.956 2.42-2.157 2.42Zm7.974 0c-1.183 0-2.157-1.085-2.157-2.42 0-1.333.955-2.418 2.157-2.418 1.21 0 2.176 1.094 2.157 2.418 0 1.335-.946 2.42-2.157 2.42Z"/></svg>
+            </span>
+            <span class="social-meta">
+              <span class="social-platform">DISCORD</span>
+              <span class="social-handle">@yomek</span>
+            </span>
+            <span class="social-arrow" aria-hidden="true">↗</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://x.com/SandraVeni5079" target="_blank" rel="noopener noreferrer" class="social-link">
+            <span class="social-icon social-x" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2H21.5l-7.5 8.563L23 22h-6.844l-5.61-7.594L4.156 22H.9l8.063-9.219L0 2h6.969l5.094 6.75L18.244 2Zm-2.4 18.156h1.844L7.875 3.703H5.875l9.969 16.453Z"/></svg>
+            </span>
+            <span class="social-meta">
+              <span class="social-platform">X (VIBE)</span>
+              <span class="social-handle">@SandraVeni5079</span>
+            </span>
+            <span class="social-arrow" aria-hidden="true">↗</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://x.com/NikiYomek" target="_blank" rel="noopener noreferrer" class="social-link">
+            <span class="social-icon social-x" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2H21.5l-7.5 8.563L23 22h-6.844l-5.61-7.594L4.156 22H.9l8.063-9.219L0 2h6.969l5.094 6.75L18.244 2Zm-2.4 18.156h1.844L7.875 3.703H5.875l9.969 16.453Z"/></svg>
+            </span>
+            <span class="social-meta">
+              <span class="social-platform">X (PERSONAL)</span>
+              <span class="social-handle">@NikiYomek</span>
+            </span>
+            <span class="social-arrow" aria-hidden="true">↗</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <p class="footer-tag">VibeValuer · local-first agent evaluation · circle: 01</p>
+  </footer>
+  <dialog id="record-dialog"><form method="dialog" id="record-form"><div class="dialog-head"><span>RECORD VERIFIED RUN</span><button value="cancel" class="close-button">×</button></div><label data-help="Select the agent that performed this run.">AGENT<select id="run-agent"></select></label><label data-help="Type of run: simple (one-off), verified (on-chain evidence), automated (event/schedule), multi-step, delegated, recovery, or critical.">RUN TYPE<select id="run-kind"><option value="simple">Simple brief</option><option value="verified">Verified task</option><option value="automated">Automated run</option><option value="multiStep">Multi-step</option><option value="delegated">Delegated task</option><option value="recovery">Recovery</option><option value="critical">Critical operation</option></select></label><label data-help="Complexity from 1–10. Higher complexity earns more XP on verified runs.">COMPLEXITY <output id="complexity-value">4</output><input id="run-complexity" type="range" min="1" max="10" value="4" /></label><label data-help="What triggered this run: user request, scheduled time, an external event, or another agent.">TRIGGER<select id="run-trigger"><option value="user">User</option><option value="schedule">Schedule</option><option value="event">Event</option><option value="agent">Agent</option></select></label><label data-help="Level of verification: verified (on-chain tx), user-confirmed (manual approval), or unverified (no evidence).">VERIFICATION<select id="run-verification"><option value="verified">Verified evidence</option><option value="user_confirmed">User confirmed</option><option value="unverified">Unverified</option></select></label><label class="checkbox-label" data-help="Operator has reviewed the evidence before recording this run. Reviewed runs get boosted scoring."><input type="checkbox" id="run-reviewed" /> Evidence reviewed by operator</label><button class="primary-button" value="default">COMMIT RUN <span>↗</span></button><p id="form-status" class="form-status"></p></form></dialog>
+  <dialog id="link-dialog"><form method="dialog" id="link-form"><div class="dialog-head"><span>LINK CREATOR TO AGENT</span><button value="cancel" class="close-button">×</button></div><p id="link-entity" class="agent-role"></p><input type="hidden" id="link-registry-id" /><label>AGENT ID<select id="link-agent"></select></label><p class="form-status">Linking does not grant a level. Runtime evidence is still required.</p><button class="primary-button" value="default">CONFIRM LINK <span>↗</span></button><p id="link-status" class="form-status"></p></form></dialog>
+  <dialog id="login-dialog"><form method="dialog" id="login-form"><div class="dialog-head"><span>ROLE LOGIN</span><button value="cancel" class="close-button">×</button></div><label>USERNAME<input id="login-username" autocomplete="username" placeholder="owner / admin / agent / viewer" /></label><label>PASSWORD<input id="login-password" type="password" autocomplete="current-password" placeholder="local dev password or configured secret" /></label><p class="form-status">Production uses VALUER_USERS_JSON password hashes. Browser receives only HttpOnly session cookie.</p><button class="primary-button" value="default">LOGIN <span>↗</span></button><p id="login-status" class="form-status"></p></form></dialog>
+  <dialog id="appeal-dialog"><form method="dialog" id="appeal-form"><div class="dialog-head"><span>SUBMIT APPEAL</span><button value="cancel" class="close-button">×</button></div><label>AGENT<select id="appeal-agent"></select></label><label>RUN ID<input id="appeal-run" placeholder="optional run id" /></label><label>REASON<textarea id="appeal-reason" rows="5" placeholder="Why this evidence needs manual review"></textarea></label><label>EVIDENCE URL<input id="appeal-url" placeholder="optional URL / proof reference" /></label><button class="primary-button" value="default">CREATE APPEAL <span>↗</span></button><p id="appeal-status" class="form-status"></p></form></dialog>
+  <script src="/app.js"></script>
+</body>
+</html>
